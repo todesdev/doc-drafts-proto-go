@@ -19,31 +19,31 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// SharedDraftsServiceClient is the client API for SharedDraftsService service.
+// DocDraftsServiceClient is the client API for DocDraftsService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type SharedDraftsServiceClient interface {
-	GetAllByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (SharedDraftsService_GetAllByTypeClient, error)
-	GetById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SharedDraft, error)
-	Create(ctx context.Context, in *SharedDraftRequest, opts ...grpc.CallOption) (*SharedDraft, error)
-	Update(ctx context.Context, in *UpdateSharedDraftRequest, opts ...grpc.CallOption) (*SharedDraft, error)
-	Delete(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+type DocDraftsServiceClient interface {
+	GetAllByUserIdAndType(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (DocDraftsService_GetAllByUserIdAndTypeClient, error)
+	GetByUserIdAndDocId(ctx context.Context, in *DocIdUserIdRequest, opts ...grpc.CallOption) (*DocDraftResponse, error)
+	CreateDocDraft(ctx context.Context, in *DocDraftRequest, opts ...grpc.CallOption) (*DocDraftResponse, error)
+	UpdateDocDraft(ctx context.Context, in *DocDraftRequest, opts ...grpc.CallOption) (*DocDraftResponse, error)
+	DeleteDocDraft(ctx context.Context, in *DocIdUserIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
-type sharedDraftsServiceClient struct {
+type docDraftsServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSharedDraftsServiceClient(cc grpc.ClientConnInterface) SharedDraftsServiceClient {
-	return &sharedDraftsServiceClient{cc}
+func NewDocDraftsServiceClient(cc grpc.ClientConnInterface) DocDraftsServiceClient {
+	return &docDraftsServiceClient{cc}
 }
 
-func (c *sharedDraftsServiceClient) GetAllByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (SharedDraftsService_GetAllByTypeClient, error) {
-	stream, err := c.cc.NewStream(ctx, &SharedDraftsService_ServiceDesc.Streams[0], "/doc_drafts.SharedDraftsService/GetAllByType", opts...)
+func (c *docDraftsServiceClient) GetAllByUserIdAndType(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (DocDraftsService_GetAllByUserIdAndTypeClient, error) {
+	stream, err := c.cc.NewStream(ctx, &DocDraftsService_ServiceDesc.Streams[0], "/doc_drafts.DocDraftsService/GetAllByUserIdAndType", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &sharedDraftsServiceGetAllByTypeClient{stream}
+	x := &docDraftsServiceGetAllByUserIdAndTypeClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -53,224 +53,224 @@ func (c *sharedDraftsServiceClient) GetAllByType(ctx context.Context, in *TypeRe
 	return x, nil
 }
 
-type SharedDraftsService_GetAllByTypeClient interface {
-	Recv() (*SharedDraft, error)
+type DocDraftsService_GetAllByUserIdAndTypeClient interface {
+	Recv() (*DocDraftResponse, error)
 	grpc.ClientStream
 }
 
-type sharedDraftsServiceGetAllByTypeClient struct {
+type docDraftsServiceGetAllByUserIdAndTypeClient struct {
 	grpc.ClientStream
 }
 
-func (x *sharedDraftsServiceGetAllByTypeClient) Recv() (*SharedDraft, error) {
-	m := new(SharedDraft)
+func (x *docDraftsServiceGetAllByUserIdAndTypeClient) Recv() (*DocDraftResponse, error) {
+	m := new(DocDraftResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *sharedDraftsServiceClient) GetById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SharedDraft, error) {
-	out := new(SharedDraft)
-	err := c.cc.Invoke(ctx, "/doc_drafts.SharedDraftsService/GetById", in, out, opts...)
+func (c *docDraftsServiceClient) GetByUserIdAndDocId(ctx context.Context, in *DocIdUserIdRequest, opts ...grpc.CallOption) (*DocDraftResponse, error) {
+	out := new(DocDraftResponse)
+	err := c.cc.Invoke(ctx, "/doc_drafts.DocDraftsService/GetByUserIdAndDocId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sharedDraftsServiceClient) Create(ctx context.Context, in *SharedDraftRequest, opts ...grpc.CallOption) (*SharedDraft, error) {
-	out := new(SharedDraft)
-	err := c.cc.Invoke(ctx, "/doc_drafts.SharedDraftsService/Create", in, out, opts...)
+func (c *docDraftsServiceClient) CreateDocDraft(ctx context.Context, in *DocDraftRequest, opts ...grpc.CallOption) (*DocDraftResponse, error) {
+	out := new(DocDraftResponse)
+	err := c.cc.Invoke(ctx, "/doc_drafts.DocDraftsService/CreateDocDraft", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sharedDraftsServiceClient) Update(ctx context.Context, in *UpdateSharedDraftRequest, opts ...grpc.CallOption) (*SharedDraft, error) {
-	out := new(SharedDraft)
-	err := c.cc.Invoke(ctx, "/doc_drafts.SharedDraftsService/Update", in, out, opts...)
+func (c *docDraftsServiceClient) UpdateDocDraft(ctx context.Context, in *DocDraftRequest, opts ...grpc.CallOption) (*DocDraftResponse, error) {
+	out := new(DocDraftResponse)
+	err := c.cc.Invoke(ctx, "/doc_drafts.DocDraftsService/UpdateDocDraft", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sharedDraftsServiceClient) Delete(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *docDraftsServiceClient) DeleteDocDraft(ctx context.Context, in *DocIdUserIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/doc_drafts.SharedDraftsService/Delete", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/doc_drafts.DocDraftsService/DeleteDocDraft", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SharedDraftsServiceServer is the server API for SharedDraftsService service.
-// All implementations must embed UnimplementedSharedDraftsServiceServer
+// DocDraftsServiceServer is the server API for DocDraftsService service.
+// All implementations must embed UnimplementedDocDraftsServiceServer
 // for forward compatibility
-type SharedDraftsServiceServer interface {
-	GetAllByType(*TypeRequest, SharedDraftsService_GetAllByTypeServer) error
-	GetById(context.Context, *IdRequest) (*SharedDraft, error)
-	Create(context.Context, *SharedDraftRequest) (*SharedDraft, error)
-	Update(context.Context, *UpdateSharedDraftRequest) (*SharedDraft, error)
-	Delete(context.Context, *IdRequest) (*emptypb.Empty, error)
-	mustEmbedUnimplementedSharedDraftsServiceServer()
+type DocDraftsServiceServer interface {
+	GetAllByUserIdAndType(*GetAllRequest, DocDraftsService_GetAllByUserIdAndTypeServer) error
+	GetByUserIdAndDocId(context.Context, *DocIdUserIdRequest) (*DocDraftResponse, error)
+	CreateDocDraft(context.Context, *DocDraftRequest) (*DocDraftResponse, error)
+	UpdateDocDraft(context.Context, *DocDraftRequest) (*DocDraftResponse, error)
+	DeleteDocDraft(context.Context, *DocIdUserIdRequest) (*emptypb.Empty, error)
+	mustEmbedUnimplementedDocDraftsServiceServer()
 }
 
-// UnimplementedSharedDraftsServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedSharedDraftsServiceServer struct {
+// UnimplementedDocDraftsServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedDocDraftsServiceServer struct {
 }
 
-func (UnimplementedSharedDraftsServiceServer) GetAllByType(*TypeRequest, SharedDraftsService_GetAllByTypeServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetAllByType not implemented")
+func (UnimplementedDocDraftsServiceServer) GetAllByUserIdAndType(*GetAllRequest, DocDraftsService_GetAllByUserIdAndTypeServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetAllByUserIdAndType not implemented")
 }
-func (UnimplementedSharedDraftsServiceServer) GetById(context.Context, *IdRequest) (*SharedDraft, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
+func (UnimplementedDocDraftsServiceServer) GetByUserIdAndDocId(context.Context, *DocIdUserIdRequest) (*DocDraftResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByUserIdAndDocId not implemented")
 }
-func (UnimplementedSharedDraftsServiceServer) Create(context.Context, *SharedDraftRequest) (*SharedDraft, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (UnimplementedDocDraftsServiceServer) CreateDocDraft(context.Context, *DocDraftRequest) (*DocDraftResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDocDraft not implemented")
 }
-func (UnimplementedSharedDraftsServiceServer) Update(context.Context, *UpdateSharedDraftRequest) (*SharedDraft, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+func (UnimplementedDocDraftsServiceServer) UpdateDocDraft(context.Context, *DocDraftRequest) (*DocDraftResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDocDraft not implemented")
 }
-func (UnimplementedSharedDraftsServiceServer) Delete(context.Context, *IdRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+func (UnimplementedDocDraftsServiceServer) DeleteDocDraft(context.Context, *DocIdUserIdRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDocDraft not implemented")
 }
-func (UnimplementedSharedDraftsServiceServer) mustEmbedUnimplementedSharedDraftsServiceServer() {}
+func (UnimplementedDocDraftsServiceServer) mustEmbedUnimplementedDocDraftsServiceServer() {}
 
-// UnsafeSharedDraftsServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SharedDraftsServiceServer will
+// UnsafeDocDraftsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DocDraftsServiceServer will
 // result in compilation errors.
-type UnsafeSharedDraftsServiceServer interface {
-	mustEmbedUnimplementedSharedDraftsServiceServer()
+type UnsafeDocDraftsServiceServer interface {
+	mustEmbedUnimplementedDocDraftsServiceServer()
 }
 
-func RegisterSharedDraftsServiceServer(s grpc.ServiceRegistrar, srv SharedDraftsServiceServer) {
-	s.RegisterService(&SharedDraftsService_ServiceDesc, srv)
+func RegisterDocDraftsServiceServer(s grpc.ServiceRegistrar, srv DocDraftsServiceServer) {
+	s.RegisterService(&DocDraftsService_ServiceDesc, srv)
 }
 
-func _SharedDraftsService_GetAllByType_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(TypeRequest)
+func _DocDraftsService_GetAllByUserIdAndType_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetAllRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(SharedDraftsServiceServer).GetAllByType(m, &sharedDraftsServiceGetAllByTypeServer{stream})
+	return srv.(DocDraftsServiceServer).GetAllByUserIdAndType(m, &docDraftsServiceGetAllByUserIdAndTypeServer{stream})
 }
 
-type SharedDraftsService_GetAllByTypeServer interface {
-	Send(*SharedDraft) error
+type DocDraftsService_GetAllByUserIdAndTypeServer interface {
+	Send(*DocDraftResponse) error
 	grpc.ServerStream
 }
 
-type sharedDraftsServiceGetAllByTypeServer struct {
+type docDraftsServiceGetAllByUserIdAndTypeServer struct {
 	grpc.ServerStream
 }
 
-func (x *sharedDraftsServiceGetAllByTypeServer) Send(m *SharedDraft) error {
+func (x *docDraftsServiceGetAllByUserIdAndTypeServer) Send(m *DocDraftResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _SharedDraftsService_GetById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdRequest)
+func _DocDraftsService_GetByUserIdAndDocId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DocIdUserIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SharedDraftsServiceServer).GetById(ctx, in)
+		return srv.(DocDraftsServiceServer).GetByUserIdAndDocId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doc_drafts.SharedDraftsService/GetById",
+		FullMethod: "/doc_drafts.DocDraftsService/GetByUserIdAndDocId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SharedDraftsServiceServer).GetById(ctx, req.(*IdRequest))
+		return srv.(DocDraftsServiceServer).GetByUserIdAndDocId(ctx, req.(*DocIdUserIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SharedDraftsService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SharedDraftRequest)
+func _DocDraftsService_CreateDocDraft_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DocDraftRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SharedDraftsServiceServer).Create(ctx, in)
+		return srv.(DocDraftsServiceServer).CreateDocDraft(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doc_drafts.SharedDraftsService/Create",
+		FullMethod: "/doc_drafts.DocDraftsService/CreateDocDraft",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SharedDraftsServiceServer).Create(ctx, req.(*SharedDraftRequest))
+		return srv.(DocDraftsServiceServer).CreateDocDraft(ctx, req.(*DocDraftRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SharedDraftsService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateSharedDraftRequest)
+func _DocDraftsService_UpdateDocDraft_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DocDraftRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SharedDraftsServiceServer).Update(ctx, in)
+		return srv.(DocDraftsServiceServer).UpdateDocDraft(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doc_drafts.SharedDraftsService/Update",
+		FullMethod: "/doc_drafts.DocDraftsService/UpdateDocDraft",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SharedDraftsServiceServer).Update(ctx, req.(*UpdateSharedDraftRequest))
+		return srv.(DocDraftsServiceServer).UpdateDocDraft(ctx, req.(*DocDraftRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SharedDraftsService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdRequest)
+func _DocDraftsService_DeleteDocDraft_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DocIdUserIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SharedDraftsServiceServer).Delete(ctx, in)
+		return srv.(DocDraftsServiceServer).DeleteDocDraft(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doc_drafts.SharedDraftsService/Delete",
+		FullMethod: "/doc_drafts.DocDraftsService/DeleteDocDraft",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SharedDraftsServiceServer).Delete(ctx, req.(*IdRequest))
+		return srv.(DocDraftsServiceServer).DeleteDocDraft(ctx, req.(*DocIdUserIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// SharedDraftsService_ServiceDesc is the grpc.ServiceDesc for SharedDraftsService service.
+// DocDraftsService_ServiceDesc is the grpc.ServiceDesc for DocDraftsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var SharedDraftsService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "doc_drafts.SharedDraftsService",
-	HandlerType: (*SharedDraftsServiceServer)(nil),
+var DocDraftsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "doc_drafts.DocDraftsService",
+	HandlerType: (*DocDraftsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetById",
-			Handler:    _SharedDraftsService_GetById_Handler,
+			MethodName: "GetByUserIdAndDocId",
+			Handler:    _DocDraftsService_GetByUserIdAndDocId_Handler,
 		},
 		{
-			MethodName: "Create",
-			Handler:    _SharedDraftsService_Create_Handler,
+			MethodName: "CreateDocDraft",
+			Handler:    _DocDraftsService_CreateDocDraft_Handler,
 		},
 		{
-			MethodName: "Update",
-			Handler:    _SharedDraftsService_Update_Handler,
+			MethodName: "UpdateDocDraft",
+			Handler:    _DocDraftsService_UpdateDocDraft_Handler,
 		},
 		{
-			MethodName: "Delete",
-			Handler:    _SharedDraftsService_Delete_Handler,
+			MethodName: "DeleteDocDraft",
+			Handler:    _DocDraftsService_DeleteDocDraft_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "GetAllByType",
-			Handler:       _SharedDraftsService_GetAllByType_Handler,
+			StreamName:    "GetAllByUserIdAndType",
+			Handler:       _DocDraftsService_GetAllByUserIdAndType_Handler,
 			ServerStreams: true,
 		},
 	},

@@ -7,39 +7,38 @@ option go_package = "api.todes.ru/proto/doc-drafts";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
-message SharedDraft {
-  string id = 1;
+service DocDraftsService {
+  rpc GetAllByUserIdAndType(GetAllRequest) returns (stream DocDraftResponse);
+  rpc GetByUserIdAndDocId(DocIdUserIdRequest) returns (DocDraftResponse);
+  rpc CreateDocDraft(DocDraftRequest) returns (DocDraftResponse);
+  rpc UpdateDocDraft(DocDraftRequest) returns (DocDraftResponse);
+  rpc DeleteDocDraft(DocIdUserIdRequest) returns (google.protobuf.Empty);
+}
+
+message GetAllRequest{
+  string userId = 1;
   string type = 2;
-  bytes data = 3;
-  google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp updated_at = 5;
 }
 
-message IdRequest {
-  string id = 1;
+message DocIdUserIdRequest {
+  string userId = 1;
+  string docId = 2;
 }
 
-message TypeRequest {
-  string type = 1;
+message DocDraftRequest {
+  string docId = 1;
+  string userId = 2;
+  string type = 3;
+  string body = 4;
 }
 
-message SharedDraftRequest {
-  string type = 1;
-  bytes data = 2;
-}
-
-message UpdateSharedDraftRequest {
-  string id = 1;
-  string type = 2;
-  bytes data = 3;
-}
-
-service SharedDraftsService {
-  rpc GetAllByType(TypeRequest) returns (stream SharedDraft);
-  rpc GetById(IdRequest) returns (SharedDraft);
-  rpc Create(SharedDraftRequest) returns (SharedDraft);
-  rpc Update(UpdateSharedDraftRequest) returns (SharedDraft);
-  rpc Delete(IdRequest) returns (google.protobuf.Empty);
+message DocDraftResponse {
+  string docId = 1;
+  string userId = 2;
+  string type = 3;
+  string body = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp updatedAt = 6;
 }
 
 
